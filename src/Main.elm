@@ -7,7 +7,7 @@ import Html exposing (Attribute, Html, a, button, div, fieldset, figure, footer,
 import Html.Attributes exposing (checked, class, coords, href, id, name, placeholder, shape, src, style, title, type_, usemap, value)
 import Html.Events exposing (onClick, onInput)
 import Http
-import Json.Decode
+import Json.Decode as D
 import List
 import Markdown
 import Maybe.Extra
@@ -32,49 +32,6 @@ main =
         }
 
 
-workflowVariables : List (List String)
-workflowVariables =
-    [ [], [ "Corpus-Name" ] ]
-
-
-workflowNames : List String
-workflowNames =
-    [ "Import Csv"
-    , "Import Text Files"
-    ]
-
-
-workflowPages : List (Pivot StepContent)
-workflowPages =
-    [ Pivot.fromCons
-        (StepContent "First Step" [ ExplanationMarkDown "First Explanation" ] Nothing Nothing)
-        [ StepContent "Second Step" [ ExplanationMarkDown "Second Explanation" ] Nothing Nothing ]
-    , Pivot.fromCons
-        (StepContent "First Step a" [ ExplanationMarkDown """
-# Heading
-
-First Explanation a
-        """, InputParameter "Corpus-Name" Nothing ] Nothing Nothing)
-        [ StepContent "Second Step b"
-            [ ExplanationMarkDown """
-# Heading
-
-Second Explanation b
-        """ ]
-            (Just Adminer)
-            (Just
-                [ UrlPiece "&sql=CREATE%20TABLE%20CORPUS_"
-                , UrlParameterPiece "Corpus-Name"
-                , UrlPiece "%20(%0A%20%20%20%20DOCUMENT_ID%20%20%20%20INTEGER(11)%20NOT%20NULL%2C%0A%20%20%20%20TITLE%20%20%20%20%20%20%20%20%20%20VARCHAR(255)%20CHARACTER%20SET%20utf8mb4%20NOT%20NULL%2C%0A%20%20%20%20URL%20%20%20%20%20%20%20%20%20%20%20%20VARCHAR(255)%20CHARACTER%20SET%20utf8mb4%20NOT%20NULL%2C%0A%20%20%20%20DOCUMENT_DATE%20%20DATETIME%20NOT%20NULL%2C%0A%20%20%20%20CONSTRAINT%20DOCUMENT_ID_PK%20PRIMARY%20KEY%20(%20DOCUMENT_ID%20)%0A%20%20%20%20)%0A%20%20%20%20ENGINE%20%3D%20ARIA%20DEFAULT%20CHARSET%3Dutf8mb4%20COLLATE%3Dutf8mb4_bin%2C%0A%20%20%20%20TRANSACTIONAL%20%3D%201%2C%0A%20%20%20%20COMMENT%20%3D%20%27meta%20data%20of%20corpus%27%0A%3B%0A%0ACREATE%20TABLE%20CORPUS_"
-                , UrlParameterPiece "Corpus-Name"
-                , UrlPiece "_TEXT%20(%0A%20%20%20%20DOCUMENT_ID%20%20%20%20INTEGER(11)%20NOT%20NULL%2C%0A%20%20%20%20DOCUMENT_TEXT%20%20MEDIUMTEXT%20CHARACTER%20SET%20utf8mb4%20NOT%20NULL%2C%0A%20%20%20%20CONSTRAINT%20DOCUMENT_ID_PK%20PRIMARY%20KEY%20(%20DOCUMENT_ID%20)%0A%20%20%20%20)%0A%20%20%20%20ENGINE%20%3D%20ARIA%20DEFAULT%20CHARSET%3Dutf8mb4%20COLLATE%3Dutf8mb4_bin%2C%0A%20%20%20%20TRANSACTIONAL%20%3D%201%2C%0A%20%20%20%20COMMENT%20%3D%20%27text%20data%20of%20corpus%27%0A%3B%0A"
-                ]
-            )
-        , StepContent "Third Step c" [ ExplanationMarkDown "Third Explanation c" ] Nothing Nothing
-        ]
-    ]
-
-
 init : () -> Url.Url -> Nav.Key -> ( Model, Cmd Msg )
 init flags url key =
     let
@@ -88,26 +45,77 @@ init flags url key =
     in
     ( { page = StartWorkflow
       , nlp = EnglishTreetagger
-      , workflows =
-            Dict.fromList <|
-                List.map3
-                    (\x y z ->
-                        Tuple.pair
-                            x
-                            { variables = Dict.fromList <| List.map (\zz -> ( zz, Nothing )) z
-                            , pages = y
-                            }
-                    )
-                    workflowNames
-                    workflowPages
-                    workflowVariables
+      , workflows = Dict.empty
       , modal = Nothing
       , showString = ""
       , key = key
       , url = url
       }
-    , Cmd.batch cmdList
+    , Cmd.batch (getWorkflows :: cmdList)
     )
+
+
+getWorkflows : Cmd Msg
+getWorkflows =
+    Http.get
+        { url = "/workflows.json"
+        , expect = Http.expectJson GotWorkflows workflowDecoder
+        }
+
+
+workflowDecoder : D.Decoder (Dict String Workflow)
+workflowDecoder =
+    D.dict
+        (D.map2 Workflow
+            (D.field "variables"
+                (D.dict (D.nullable D.string))
+            )
+            (D.field "steps"
+                (D.oneOrMore Pivot.fromCons
+                    (D.map4
+                        StepContent
+                        (D.field "title" D.string)
+                        (D.field "explanation"
+                            (D.list
+                                (D.oneOf
+                                    [ D.map ExplanationMarkDown
+                                        (D.field "markdown" D.string)
+                                    , D.map InputParameter
+                                        (D.field "input-parameter" D.string)
+                                    ]
+                                )
+                            )
+                        )
+                        (D.maybe
+                            (D.field "application" D.string
+                                |> D.andThen
+                                    (\s ->
+                                        case s of
+                                            "Adminer" ->
+                                                D.succeed Adminer
+
+                                            _ ->
+                                                D.fail <| "Workflow step contains an unsupported application"
+                                    )
+                            )
+                        )
+                        (D.maybe
+                            (D.field "url"
+                                (D.list
+                                    (D.oneOf
+                                        [ D.map UrlPiece
+                                            (D.field "url-piece" D.string)
+                                        , D.map UrlPiece
+                                            (D.field "url-parameter-piece" D.string)
+                                        ]
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        )
 
 
 subscriptions : Model -> Sub Msg
@@ -146,8 +154,8 @@ type alias StepContent =
 
 type ExplanationPart
     = ExplanationMarkDown String
-    | InputParameter String (Maybe String)
-    | OutputParameter String (Maybe String)
+    | InputParameter String
+    | OutputParameter String
 
 
 type UrlPart
@@ -177,6 +185,7 @@ type Msg
     | ModifyWorkflow WfMsg
     | OpenModal ( List ExplanationPart, VariableStore )
     | CloseModal
+    | GotWorkflows (Result Http.Error (Dict String Workflow))
 
 
 type WfMsg
@@ -200,6 +209,31 @@ update msg model =
 
         ChoseNlp newNlp ->
             ( { model | nlp = newNlp }, Cmd.none )
+
+        GotWorkflows (Ok newWorkflows) ->
+            ( { model | workflows = newWorkflows }, Cmd.none )
+
+        GotWorkflows (Err error) ->
+            ( { model
+                | showString =
+                    case error of
+                        Http.BadUrl s ->
+                            "BadUrl " ++ s
+
+                        Http.Timeout ->
+                            "Timeout"
+
+                        Http.NetworkError ->
+                            "NetworkError"
+
+                        Http.BadStatus i ->
+                            "BadStatus " ++ String.fromInt i
+
+                        Http.BadBody s ->
+                            "BadBody " ++ s
+              }
+            , Cmd.none
+            )
 
         ModifyWorkflow wfMsg ->
             ( { model
@@ -403,7 +437,7 @@ viewExplanationPart wf varStore e =
         ExplanationMarkDown mdString ->
             div [ class "content" ] [ Markdown.toHtml [] mdString ]
 
-        InputParameter name valueMaybe_del ->
+        InputParameter name ->
             let
                 valueAttr =
                     Dict.get name varStore
@@ -432,7 +466,7 @@ viewExplanationPart wf varStore e =
                     ]
                 ]
 
-        OutputParameter string stringMaybe ->
+        OutputParameter string ->
             div [] []
 
 
@@ -548,6 +582,7 @@ type alias IframeConfiguration =
     , workflowStepExplanation : Maybe (List ExplanationPart)
     , variables : Maybe VariableStore
     , workflow : Maybe String
+    , workflowNames : List String
     }
 
 
@@ -700,6 +735,7 @@ iFrameConfig model =
                             wf
                 )
         )
+        (Dict.keys model.workflows)
 
 
 iframeSection : IframeConfiguration -> Html Msg
@@ -710,7 +746,7 @@ iframeSection ifConfig =
         , makeTileChild ifConfig.startWorkflowActive
             [ div []
                 [ text "Start an Workflow."
-                , ul [] <| List.map (\w -> li [] [ a [ href "#", onClick (ChosePage <| WorkflowPage w) ] [ text w ] ]) workflowNames
+                , ul [] <| List.map (\w -> li [] [ a [ href "#", onClick (ChosePage <| WorkflowPage w) ] [ text w ] ]) ifConfig.workflowNames
                 ]
             ]
         , makeTileChild ifConfig.creatorActive

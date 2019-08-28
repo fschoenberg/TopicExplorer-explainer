@@ -1,0 +1,53 @@
+{
+  "Import Csv":
+  { "variables" : {}
+  , "steps" :
+      [ { "title" : "First Step"
+        , "explanation" :
+          [ { "markdown" : "First Explanation"}
+          ]
+        }
+      , { "title" : "Second Step"
+        , "explanation" :
+          [ { "markdown" : "Second Explanation"}
+          ]
+        }
+      , { "title" : "Third Step"
+        , "explanation" :
+          [ { "markdown" : "Third Explanation"}
+          ]
+        }
+      ]
+  },
+  "Import Text Files":
+  { "variables" : { "Corpus-Name" : null }
+  , "steps" :
+      [
+        { "title" : "First Step a"
+        , "explanation" :
+          [ { "markdown" : "# Heading\r\n\r\nFirst Explanation a\r\n"}
+          , { "input-parameter" : "Corpus-Name" }
+          ]
+        }
+      , { "title" : "Second Step b"
+        , "explanation" :
+          [ { "markdown" : "\r\n# Heading\r\n\r\nSecond Explanation b\r\n            \r\n"}
+          ]
+        , "application" : "Adminer"
+        , "url" :
+          [ { "url-piece" : "&sql=CREATE%20TABLE%20CORPUS_" }
+          , { "url-parameter-piece" : "Corpus-Name" }
+          , { "url-piece" : "%20(%0A%20%20%20%20DOCUMENT_ID%20%20%20%20INTEGER(11)%20NOT%20NULL%2C%0A%20%20%20%20TITLE%20%20%20%20%20%20%20%20%20%20VARCHAR(255)%20CHARACTER%20SET%20utf8mb4%20NOT%20NULL%2C%0A%20%20%20%20URL%20%20%20%20%20%20%20%20%20%20%20%20VARCHAR(255)%20CHARACTER%20SET%20utf8mb4%20NOT%20NULL%2C%0A%20%20%20%20DOCUMENT_DATE%20%20DATETIME%20NOT%20NULL%2C%0A%20%20%20%20CONSTRAINT%20DOCUMENT_ID_PK%20PRIMARY%20KEY%20(%20DOCUMENT_ID%20)%0A%20%20%20%20)%0A%20%20%20%20ENGINE%20%3D%20ARIA%20DEFAULT%20CHARSET%3Dutf8mb4%20COLLATE%3Dutf8mb4_bin%2C%0A%20%20%20%20TRANSACTIONAL%20%3D%201%2C%0A%20%20%20%20COMMENT%20%3D%20%27meta%20data%20of%20corpus%27%0A%3B%0A%0ACREATE%20TABLE%20CORPUS_" }
+          , { "url-parameter-piece" : "Corpus-Name" }
+          , { "url-piece" : "_TEXT%20(%0A%20%20%20%20DOCUMENT_ID%20%20%20%20INTEGER(11)%20NOT%20NULL%2C%0A%20%20%20%20DOCUMENT_TEXT%20%20MEDIUMTEXT%20CHARACTER%20SET%20utf8mb4%20NOT%20NULL%2C%0A%20%20%20%20CONSTRAINT%20DOCUMENT_ID_PK%20PRIMARY%20KEY%20(%20DOCUMENT_ID%20)%0A%20%20%20%20)%0A%20%20%20%20ENGINE%20%3D%20ARIA%20DEFAULT%20CHARSET%3Dutf8mb4%20COLLATE%3Dutf8mb4_bin%2C%0A%20%20%20%20TRANSACTIONAL%20%3D%201%2C%0A%20%20%20%20COMMENT%20%3D%20%27text%20data%20of%20corpus%27%0A%3B%0A"}
+          ]
+        }
+      , { "title" : "Third Step c"
+        , "explanation" :
+          [ { "markdown" : "\r\n# Heading\r\n\r\nThird Explanation c\r\n            \r\n"
+            }
+          ]
+        }
+      ]
+  }
+}
