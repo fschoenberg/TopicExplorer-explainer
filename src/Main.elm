@@ -105,7 +105,7 @@ workflowDecoder =
                                     (D.oneOf
                                         [ D.map UrlPiece
                                             (D.field "url-piece" D.string)
-                                        , D.map UrlPiece
+                                        , D.map UrlParameterPiece
                                             (D.field "url-parameter-piece" D.string)
                                         ]
                                     )
