@@ -457,7 +457,7 @@ viewExplanationPart wf varStore e =
                     [ input
                         ([ class "input"
                          , type_ "text"
-                         , placeholder "e.g Alex Smith"
+                         , placeholder name
                          , onInput (\newValue -> ModifyWorkflow (UpdateParameter wf name newValue))
                          ]
                             ++ valueAttr
