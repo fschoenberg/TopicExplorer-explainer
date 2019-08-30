@@ -51,14 +51,28 @@ init flags url key =
       , key = key
       , url = url
       }
-    , Cmd.batch (getWorkflows :: cmdList)
+    , Cmd.batch (getForward :: cmdList)
     )
 
 
-getWorkflows : Cmd Msg
-getWorkflows =
+getForward : Cmd Msg
+getForward =
     Http.get
-        { url = "/workflows.json"
+        { url = "/forward-to-workflows.json"
+        , expect = Http.expectJson GotForward forwardUrlDecoder
+        }
+
+
+forwardUrlDecoder : D.Decoder String
+forwardUrlDecoder =
+    D.field "forward-to"
+        D.string
+
+
+getWorkflows : String -> Cmd Msg
+getWorkflows workflowUrl =
+    Http.get
+        { url = workflowUrl
         , expect = Http.expectJson GotWorkflows workflowDecoder
         }
 
@@ -186,6 +200,7 @@ type Msg
     | OpenModal ( List ExplanationPart, VariableStore )
     | CloseModal
     | GotWorkflows (Result Http.Error (Dict String Workflow))
+    | GotForward (Result Http.Error String)
 
 
 type WfMsg
@@ -193,6 +208,24 @@ type WfMsg
     | Previous String
     | Reset String
     | UpdateParameter String String String
+
+
+errorToString error =
+    case error of
+        Http.BadUrl s ->
+            "BadUrl " ++ s
+
+        Http.Timeout ->
+            "Timeout"
+
+        Http.NetworkError ->
+            "NetworkError"
+
+        Http.BadStatus i ->
+            "BadStatus " ++ String.fromInt i
+
+        Http.BadBody s ->
+            "BadBody " ++ s
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -214,24 +247,15 @@ update msg model =
             ( { model | workflows = newWorkflows }, Cmd.none )
 
         GotWorkflows (Err error) ->
-            ( { model
-                | showString =
-                    case error of
-                        Http.BadUrl s ->
-                            "BadUrl " ++ s
+            ( { model | showString = errorToString error }
+            , Cmd.none
+            )
 
-                        Http.Timeout ->
-                            "Timeout"
+        GotForward (Ok workflowUrl) ->
+            ( model, getWorkflows workflowUrl )
 
-                        Http.NetworkError ->
-                            "NetworkError"
-
-                        Http.BadStatus i ->
-                            "BadStatus " ++ String.fromInt i
-
-                        Http.BadBody s ->
-                            "BadBody " ++ s
-              }
+        GotForward (Err error) ->
+            ( { model | showString = errorToString error }
             , Cmd.none
             )
 
