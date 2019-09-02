@@ -1,20 +1,28 @@
+
 {
-  "Import Csv":
+  "Create Corpus from Text Files":
   { "variables" : {}
   , "steps" :
-      [ { "title" : "First Step"
+      [ { "title" : "Create Import-Folder with Text Files"
         , "explanation" :
-          [ { "markdown" : "First Explanation"}
+          [ { "markdown" : "## Create Import-Folder with Text Files\r\n1. Use the file manager, e.g. Windows File Explorer on Windows or Finder on Mac OS, and navigate to the TopicExplorer-docker project, which is a folder named `TopicExplorer-docker`.\r\n2. Create a new folder in the sub directory `TopicExplorer-docker\/volumes\/input-corpora\/text\/` with the name of the new corpus, e.g. `TopicExplorer-docker\/volumes\/input-corpora\/text\/MY_CORPUS`.  \r\nThe corpus name\r\n    - must not contain any white space characters,\r\n    - has to start with a upper case letter and\r\n    - after the first character may come up to 16 characters that may be a combination of upper case letters, numbers and underscores.\r\n    - Make sure that the new corpus name has not been used already for any other corpus in any language in your TopicExplorer instance. If in doubt check the corpora overviews on the creator pages of all languages.\r\n3. Copy all text files into the new sub folder. Make sure that all text file use UTF-8 encoding. Note that word files are not text files.\r\n\r\n#### Options\r\n- The folder with corpus may contain nested sub folders. In this case, nested folder structure will be converted into flat files later in the import workflow.\r\n\r\n#### Result of this step\r\nA new sub folder within the Topicexplorer docker folder with the name of new corpus. The corpus name need to be used in next the step.\r\n"
+            }
           ]
         }
-      , { "title" : "Second Step"
+      , { "title" : "Prepare to specify and run Import with Jobson"
         , "explanation" :
-          [ { "markdown" : "Second Explanation"}
+          [ { "markdown" : "## Prepare to specify and run Import with Jobson\r\nThe next step take you to the Jobson user interface that allows you to select the job type, to input the necessary parameters for the job and finally submit and start the job.\r\n\r\n1. Select in the field *Job Spec* the Option *Import folder with text files*.\r\n2. Then fill out the form below\r\n\r\n    1. Choose a meaningful job name\r\n    2. Specify the corpus name as the input folder, e.g. continuing the example `MY_CORPUS`\r\n    3. Specify the handling of sub folders, e.g. with or without subfolders of the folder MY_CORPUS.\r\n    4. Select the appropriate combination of TopicExplorer Database, NLP-software and language\r\n3. Submit Job, which starts the jobs\r\n\r\n#### Result of the next step\r\nAfter submitting the job, the job is started. Jobson shows then job details and output. Furthermore, the overview page of Jobson shows the current state of all jobs (running, fatal-error, finished) including the one just submitted.\r\n"}
           ]
         }
-      , { "title" : "Third Step"
+      , { "title" : "Specify and run Import with Jobson"
         , "explanation" :
-          [ { "markdown" : "Third Explanation"}
+          [ { "markdown" : "## Specify and run Import with Jobson\r\nThe Jobson user interface allows you to select the job type, to input the necessary parameters for the job and finally submit and start the job.\r\n\r\n1. Select in the field *Job Spec* the Option *Import folder with text files*.\r\n2. Then fill out the form below\r\n\r\n    1. Choose a meaningful job name\r\n    2. Specify the input folder, e.g. continuing the example  `MY_CORPUS`\r\n    3. Specify the handling of sub folders, e.g. with or without subfolders of the folder MY_CORPUS.\r\n    4. Select the appropriate combination of TopicExplorer Database, NLP-software and language\r\n3. Submit Job, which starts the jobs\r\n\r\n#### Result of this step\r\nAfter submitting the job, the job is started. Jobson shows then job details and output. Furthermore, the overview page of Jobson shows the current state of all jobs (running, fatal-error, finished) including the one just submitted.\r\n"}
+            ]
+        , "application" : "Jobson"
+        }
+      , { "title" : "Monitor Import Job until finished"
+        , "explanation" :
+          [ { "markdown" : "## Monitor Import Job until finished"}
           ]
         }
       ]
