@@ -459,7 +459,7 @@ viewExplanationPart : String -> VariableStore -> ExplanationPart -> Html Msg
 viewExplanationPart wf varStore e =
     case e of
         ExplanationMarkDown mdString ->
-            div [ class "content" ] [ Markdown.toHtml [] mdString ]
+            div [ class "content has-text-left" ] [ Markdown.toHtml [] mdString ]
 
         InputParameter name ->
             let
