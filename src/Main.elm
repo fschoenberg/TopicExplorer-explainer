@@ -108,6 +108,9 @@ workflowDecoder =
                                             "Adminer" ->
                                                 D.succeed Adminer
 
+                                            "Jobson" ->
+                                                D.succeed Jobson
+
                                             _ ->
                                                 D.fail <| "Workflow step contains an unsupported application"
                                     )
