@@ -140,7 +140,122 @@ After submitting the job, the job  is started. Jobson shows then job details and
 
 1. You can monitor the submitted Job at the overview page of Jobson. Alternatively, you can see the job details and output at the job specific page that shows details and output of the submitted job.
 ![alt  Import Job is finished.](Create-Corpus-from-Text-Files-4-1.png " Import Job is finished.")
-2. After the conversion job is successfully finished, the new subfolder with text files available in `TopicExplorer-docker` ▶ `volumes` ▶ `input-corpora` ▶ `text` and ready for being imported or the Zip file archive with the text files can be downloaded, manually edited and then imported.
+2. After the conversion job is successfully finished either one of the following two states is present
+  - a new subfolder with text files is available in `TopicExplorer-docker` ▶ `volumes` ▶ `input-corpora` ▶ `text` and ready for being imported straight away or
+  - a Zip file archive with the text files is available that can be downloaded and unzipped. Then the text files can be manually edited and the folder with the edited text files can be imported.
 
 #### Result of this step
-A folder with text files or a Zip file archive that contains the text files.
+A folder with text files or a Zip file archive that contains the text files. In both cases, use or prepare a folder with text files for import and continue with the workflow *Create Corpus from Text Files*.
+
+# Create Corpus from CSV Speadsheets
+
+## Prepare Corpus
+First, choose the right combination of language and NLP software in the navigation bar on the left side.
+
+This workflow assumes that the text documents of the corpus with their
+meta data are available as two CSV files that have the following tabular structure:
+-  Meta Data CSV-File
+```
+|| DOCUMENT_ID | TITLE        | URL          | DOCUMENT_DATE        ||
+|| INTEGER     | VARCHAR(255) | VARCHAR(255) | 'YYYY-MM-DD hh:mm:ss'||
+```
+-  Text-Data CSV-File
+```
+|| DOCUMENT_ID | TEXT ||
+|| INTEGER     | TEXT ||
+```
+Notes
+    - The integers in the columns `DOCUMENT_ID` in both files link the meta data to the text.
+    - When `TEXT` column in the Text-Data CSV-File contains newlines, the CSV file has to follow the multiline standard for CSV files.
+
+## Input Corpus Name
+
+Input Corpus Name
+
+The corpus name
+- has to start with a upper case letter and
+- must not contain any white space characters,
+- after the first character may come up to 16 characters that may be a combination of upper case letters, numbers and underscores.
+- Make sure that the new corpus name has not been used already for any other corpus in any language in your TopicExplorer instance. If in doubt check the corpora overviews on the creator pages of all languages.
+
+## Prepare to Create Database Tables
+In the next step, the database tables for meta and text data will be created. The workflow will take you to the Adminer tool that will show a text input field with two prepared create table statements.
+
+Just click the **Execute** Button below the text input. Do not change the SQL-Statements.
+![alt  Create Table Statements, just click Execute.](Create-Corpus-from-CSV-Speadsheets-3-1.png "Create Table Statements, just click Execute")
+
+#### Result of the next step
+Database tables for text and meta data will be created.
+
+## Create Database Tables
+Database tables for meta and text data are created in this step. The Adminer tool shows a text input field with two prepared create table statements.
+
+Just click the **Execute** Button below the text input. Do not change the SQL-Statements.
+![alt  Create Table Statements, just click Execute.](Create-Corpus-from-CSV-Speadsheets-3-1.png "Create Table Statements, just click Execute")
+
+#### Result of this step
+Database tables for text and meta data are created.
+
+
+## Prepare to Import Meta Data
+The next step will take you to the Adminer tool and show the select page for the meta-data table that is still empty at the moment.
+![alt  Import Meta-Data.](Create-Corpus-from-CSV-Speadsheets-5-1.png "Import Meta-Data.")
+
+1. Click **Import**
+2. Select the CSV file with the meta data  
+![alt  Select the CSV file with the meta data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the meta data")
+3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
+![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-5-3.png "Choose the column separator.")
+4. Click Import.
+![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-5-4.png "Click Import.")
+
+#### Result of the next step
+Database table with meta-data.
+
+## Import Meta Data
+This step takes you to the Adminer tool and show the select page for the meta-data table that is still empty at the moment.
+![alt  Import Meta-Data.](Create-Corpus-from-CSV-Speadsheets-5-1.png "Import Meta-Data.")
+
+1. Click **Import**
+2. Select the CSV file with the meta data  
+![alt  Select the CSV file with the meta data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the meta data")
+3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
+![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-5-3.png "Choose the column separator.")
+4. Click Import.
+![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-5-4.png "Click Import.")
+
+#### Result of the this step
+Database table with meta-data.
+
+## Prepare to Import Text Data
+The next step will take you to the Adminer tool and show the select page for the text-data table that is still empty at the moment.
+![alt  Import Text-Data.](Create-Corpus-from-CSV-Speadsheets-7-1.png "Import Text-Data.")
+
+1. Click **Import**
+2. Select the CSV file with the text data  
+![alt  Select the CSV file with the text data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the text data")
+3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
+![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-7-3.png "Choose the column separator.")
+4. Click Import.
+![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-7-4.png "Click Import.")
+
+#### Result of the next step
+Database table with text-data.
+
+## Import Text Data
+This step takes you to the Adminer tool and show the select page for the text-data table that is still empty at the moment.
+![alt  Import Text-Data.](Create-Corpus-from-CSV-Speadsheets-7-1.png "Import Text-Data.")
+
+1. Click **Import**
+2. Select the CSV file with the text data  
+![alt  Select the CSV file with the text data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the text data")
+3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
+![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-7-3.png "Choose the column separator.")
+4. Click Import.
+![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-7-4.png "Click Import.")
+
+#### Result of the this step
+Database table with text-data.
+
+
+## Prepare to
