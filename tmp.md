@@ -206,14 +206,14 @@ The next step will take you to the Adminer tool and show the select page for the
 ![alt  Select the CSV file with the meta data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the meta data")
 3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
 ![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-5-3.png "Choose the column separator.")
-4. Click Import.
+4. Click Import.  
 ![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-5-4.png "Click Import.")
 
 #### Result of the next step
 Database table with meta-data.
 
 ## Import Meta Data
-This step takes you to the Adminer tool and show the select page for the meta-data table that is still empty at the moment.
+This step takes you to the Adminer tool and show the select page for the meta-data table that is still empty at the moment.  
 ![alt  Import Meta-Data.](Create-Corpus-from-CSV-Speadsheets-5-1.png "Import Meta-Data.")
 
 1. Click **Import**
@@ -221,7 +221,7 @@ This step takes you to the Adminer tool and show the select page for the meta-da
 ![alt  Select the CSV file with the meta data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the meta data")
 3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
 ![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-5-3.png "Choose the column separator.")
-4. Click Import.
+4. Click Import.  
 ![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-5-4.png "Click Import.")
 
 #### Result of the this step
@@ -236,14 +236,14 @@ The next step will take you to the Adminer tool and show the select page for the
 ![alt  Select the CSV file with the text data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the text data")
 3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
 ![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-7-3.png "Choose the column separator.")
-4. Click Import.
+4. Click Import.  
 ![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-7-4.png "Click Import.")
 
 #### Result of the next step
 Database table with text-data.
 
 ## Import Text Data
-This step takes you to the Adminer tool and show the select page for the text-data table that is still empty at the moment.
+This step takes you to the Adminer tool and show the select page for the text-data table that is still empty at the moment.  
 ![alt  Import Text-Data.](Create-Corpus-from-CSV-Speadsheets-7-1.png "Import Text-Data.")
 
 1. Click **Import**
@@ -251,11 +251,28 @@ This step takes you to the Adminer tool and show the select page for the text-da
 ![alt  Select the CSV file with the text data](Create-Corpus-from-CSV-Speadsheets-5-2.png "Select the CSV file with the text data")
 3. Choose the column separator. If in doubt, open the CSV file with Calc from Libre Office and try different options in the import wizard.
 ![alt  Choose the column separator.](Create-Corpus-from-CSV-Speadsheets-7-3.png "Choose the column separator.")
-4. Click Import.
+4. Click Import.  
 ![alt  Click Import.](Create-Corpus-from-CSV-Speadsheets-7-4.png "Click Import.")
 
 #### Result of the this step
 Database table with text-data.
 
 
-## Prepare to
+## Prepare to register the new Corpus
+In the next step, the new corpus will be registered. The workflow will take you to the Adminer tool that will show a text input field with two prepared insert statements.
+
+Just click the **Execute** Button below the text input. Do not change the SQL-Statements.
+![alt  Create Table Statements, just click Execute.](Create-Corpus-from-CSV-Speadsheets-3-1.png "Create Table Statements, just click Execute")
+
+#### Result of the next step
+The new corpus will be registered.
+
+
+## Register the new Corpus
+The new corpus will be registered. The the Adminer tool shows a text input field with two prepared insert statements.
+
+Just click the **Execute** Button below the text input. Do not change the SQL-Statements.
+![alt  Create Table Statements, just click Execute.](Create-Corpus-from-CSV-Speadsheets-3-1.png "Create Table Statements, just click Execute")
+
+#### Result of the next step
+The new corpus is registered.
