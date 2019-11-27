@@ -58,7 +58,7 @@ init flags url key =
 getForward : Cmd Msg
 getForward =
     Http.get
-        { url = "/forward-to-workflows.json"
+        { url = "forward-to-workflows.json"
         , expect = Http.expectJson GotForward forwardUrlDecoder
         }
 
