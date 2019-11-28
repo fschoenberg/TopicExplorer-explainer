@@ -778,7 +778,7 @@ iframeSection ifConfig =
             ]
         , makeTileChild ifConfig.creatorActive
             [ makeIframe
-                ("/" ++ ifConfig.creatorUrlSuffix)
+                ("" ++ ifConfig.creatorUrlSuffix)
                 "Creator"
             ]
         , makeTileChild ifConfig.adminerActive
