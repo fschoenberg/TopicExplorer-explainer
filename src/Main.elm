@@ -778,17 +778,17 @@ iframeSection ifConfig =
             ]
         , makeTileChild ifConfig.creatorActive
             [ makeIframe
-                ("http://localhost:8001/" ++ ifConfig.creatorUrlSuffix)
+                ("/" ++ ifConfig.creatorUrlSuffix)
                 "Creator"
             ]
         , makeTileChild ifConfig.adminerActive
             [ makeIframe
-                ("http://localhost:8002" ++ ifConfig.adminerUrlSuffix)
+                ("/sql" ++ ifConfig.adminerUrlSuffix)
                 "Adminer"
             ]
         , makeTileChild ifConfig.jobsonActive
             [ makeIframe
-                "http://localhost:8001/jobson/#/submit"
+                "/jobson/#/submit"
                 "Jobson"
             ]
         ]
