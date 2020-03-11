@@ -832,10 +832,8 @@ makeIframe url title =
         , Html.Attributes.attribute "src" url
         , Html.Attributes.attribute "title" title
         , Html.Attributes.attribute "frameborder" "1"
-        , Html.Attributes.attribute "width" "100%"
-        , Html.Attributes.attribute "height" "100%"
         , Html.Attributes.attribute "allowfullscreen" "true"
-        , Html.Attributes.attribute "style" "height:100%"
+        , Html.Attributes.attribute "style" "height:calc(100vh - 30ex);width:100%;"
         ]
         []
 
