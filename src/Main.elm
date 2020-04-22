@@ -619,13 +619,13 @@ iFrameConfig model =
         creatorUrlSuffix =
             case model.nlp of
                 EnglishTreetagger ->
-                    "/creator/en/treetagger/"
+                    "../creator/en/treetagger/"
 
                 GermanTreetagger ->
-                    "/creator/de/treetagger/"
+                    "../creator/de/treetagger/"
 
                 JapaneseMecab ->
-                    "/creator/jp/mecab/"
+                    "../creator/jp/mecab/"
 
         adminerUrlSuffix =
             let
@@ -783,12 +783,12 @@ iframeSection ifConfig =
             ]
         , makeTileChild ifConfig.adminerActive
             [ makeIframe
-                ("/sql" ++ ifConfig.adminerUrlSuffix)
+                ("../sql" ++ ifConfig.adminerUrlSuffix)
                 "Adminer"
             ]
         , makeTileChild ifConfig.jobsonActive
             [ makeIframe
-                "/jobson/#/submit"
+                "../jobson/#/submit"
                 "Jobson"
             ]
         ]
