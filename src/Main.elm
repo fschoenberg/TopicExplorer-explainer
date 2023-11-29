@@ -678,13 +678,13 @@ iFrameConfig model =
             in
             (case model.nlp of
                 EnglishTreetagger ->
-                    "/?server=topicexplorer-db&username=root&db=TE_MANAGEMENT_EN_TREETAGGER"
+                    "/?server=topicexplorer-db&db=TE_MANAGEMENT_EN_TREETAGGER"
 
                 GermanTreetagger ->
-                    "/?server=topicexplorer-db&username=root&db=TE_MANAGEMENT_DE_TREETAGGER"
+                    "/?server=topicexplorer-db&db=TE_MANAGEMENT_DE_TREETAGGER"
 
                 JapaneseMecab ->
-                    "/?server=topicexplorer-db&username=root&db=TE_MANAGEMENT_JP_MECAB"
+                    "/?server=topicexplorer-db&db=TE_MANAGEMENT_JP_MECAB"
             )
                 ++ urlSuffix
 
@@ -783,7 +783,7 @@ iframeSection ifConfig =
             ]
         , makeTileChild ifConfig.adminerActive
             [ makeIframe
-                ("../sql" ++ ifConfig.adminerUrlSuffix)
+                ("../../adminer" ++ ifConfig.adminerUrlSuffix)
                 "Adminer"
             ]
         , makeTileChild ifConfig.jobsonActive
